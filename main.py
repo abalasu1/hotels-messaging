@@ -18,12 +18,12 @@ if 'VCAP_SERVICES' in os.environ:
   urimq = ''
 
   for key, value in vcap_services.iteritems():   # iter on both keys and values
-	  if key.find('mysql') > 0:
-	    mysql_info = vcap_services[key][0]
+    if key.find('mysql') > 0 or key.find('cleardb') >= 0:
+      mysql_info = vcap_services[key][0]
 		
-	    cred = mysql_info['credentials']
-	    uri = cred['uri'].encode('utf8')
-	    urimq = cred['uri'].encode('utf8')
+      cred = mysql_info['credentials']
+      uri = cred['uri'].encode('utf8')
+      urimq = cred['uri'].encode('utf8')
 
   app.config['SQLALCHEMY_DATABASE_URI'] = uri 
   mq = redis.StrictRedis.from_url(urimq + '/0')
